@@ -1,11 +1,15 @@
 # ProtectedStruct
 
-Disallow creating a struct from other modules.
+Protect Elixir struct creation outside of its module.
+
+`ProtectedStruct` disallows creating a protected struct using `%Struct{}` syntax, and updating it using `%Struct{val | attrs: ...}` syntax.
+It does that by hooking in to compilation events, and raising when a disallowed method is detected.
+By default, t also disallows creation in eval contexts by agumenting the `__struct__/1` implementation.
 
 ## Usage
 
 ```elixir
-defmodule Mystruct do
+defmodule MyStruct do
   use ProtectedStruct
   # for warning instead of failing:
   # use ProtectedStruct, on_violation: :warn
@@ -28,7 +32,7 @@ defmodule StructUser do
 end
 
 # ** (ProtectedStruct.Error) %Mystruct{} can only be created inside its own module
-#    (myproj 0.1.0) expanding struct: Mystruct.__struct__/1
+#    (myproj 0.1.0) expanding struct: MyStruct.__struct__/1
 #    struct_user.ex:3: (file)
 ```
 
@@ -49,7 +53,7 @@ end
 
 def deps do
   [
-    {:protected_struct, "~> 0.1.0"}
+    {:protected_struct, "~> 0.1.1"}
   ]
 end
 ```

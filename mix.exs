@@ -5,7 +5,7 @@ defmodule ProtectedStruct.MixProject do
     [
       app: :protected_struct,
       description: "Protect Elixir struct creation outside of its module",
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
