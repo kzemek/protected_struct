@@ -78,10 +78,7 @@ defmodule ProtectedStruct.Tracer do
   @doc false
   def trace({:struct_expansion, _meta, module, _keys}, env) do
     if module != env.module and not Macro.Env.in_guard?(env) and not Macro.Env.in_match?(env) do
-      action =
-        if Module.open?(module),
-          do: module |> Module.get_attribute(ProtectedStruct),
-          else: module.__info__(:attributes)[ProtectedStruct]
+      action = get_action(module)
 
       case List.wrap(action) do
         [] ->
@@ -102,6 +99,15 @@ defmodule ProtectedStruct.Tracer do
 
   def trace(_event, _env),
     do: :ok
+
+  defp get_action(module) do
+    if Module.open?(module),
+      do: Module.get_attribute(module, ProtectedStruct),
+      else: module.__info__(:attributes)[ProtectedStruct]
+  rescue
+    ArgumentError ->
+      module.__info__(:attributes)[ProtectedStruct]
+  end
 end
 
 defmodule ProtectedStruct.Error do
