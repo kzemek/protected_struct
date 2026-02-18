@@ -53,7 +53,7 @@ end
 
 def deps do
   [
-    {:protected_struct, "~> 0.1.1"}
+    {:protected_struct, "~> 0.1.2"}
   ]
 end
 ```
